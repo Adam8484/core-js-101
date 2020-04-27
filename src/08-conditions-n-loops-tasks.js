@@ -215,8 +215,33 @@ function findFirstSingleChar(str) {
  *   5, 3, true, true   => '[3, 5]'
  *
  */
-function getIntervalString(/* a, b, isStartIncluded, isEndIncluded */) {
-  throw new Error('Not implemented');
+function getIntervalString(a, b, isStartIncluded, isEndIncluded) {
+  let min = a;
+  let max = b;
+  let start = '';
+  let end = '';
+  if (a > b) {
+    min = b;
+    max = a;
+    if (isStartIncluded) {
+      end = ']';
+    } else end = ')';
+    if (isEndIncluded) {
+      start = '[';
+    } else start = '(';
+    min = min.toString(10);
+    max = max.toString(10);
+  } else {
+    if (isStartIncluded) {
+      start = '[';
+    } else start = '(';
+    if (isEndIncluded) {
+      end = ']';
+    } else end = ')';
+    min = min.toString(10);
+    max = max.toString(10);
+  }
+  return `${start}${min}, ${max}${end}`;
 }
 
 /**
@@ -231,8 +256,8 @@ function getIntervalString(/* a, b, isStartIncluded, isEndIncluded */) {
  * 'rotator' => 'rotator'
  * 'noon' => 'noon'
  */
-function reverseString(/* str */) {
-  throw new Error('Not implemented');
+function reverseString(str) {
+  return str.split('').reverse().join('');
 }
 
 /**
@@ -247,8 +272,8 @@ function reverseString(/* str */) {
  *   87354 => 45378
  *   34143 => 34143
  */
-function reverseInteger(/* num */) {
-  throw new Error('Not implemented');
+function reverseInteger(num) {
+  return parseInt(num.toString(10).split('').reverse().join(''), 10);
 }
 
 /**
@@ -271,8 +296,29 @@ function reverseInteger(/* num */) {
  *   5436468789016589 => false
  *   4916123456789012 => false
  */
-function isCreditCardNumber(/* ccn */) {
-  throw new Error('Not implemented');
+function isCreditCardNumber(ccn) {
+  const str = ccn.toString();
+  let arr = str.split('');
+  arr = arr.reverse();
+  arr = arr.map(Number);
+  const check = arr[0];
+  arr[0] = 0;
+  arr = arr.map((i, x) => {
+    if (x % 2 === 1) {
+      return i * 2;
+    }
+    return i;
+  });
+  arr = arr.map((i) => {
+    if (i > 9) return i - 9;
+    return i;
+  });
+  arr = arr.reduce((a, b) => a + b);
+  arr += check;
+  if ((arr * 9) % 10 === 0) {
+    return true;
+  }
+  return false;
 }
 
 /**
@@ -289,8 +335,19 @@ function isCreditCardNumber(/* ccn */) {
  *   10000 ( 1+0+0+0+0 = 1 ) => 1
  *   165536 (1+6+5+5+3+6 = 26,  2+6 = 8) => 8
  */
-function getDigitalRoot(/* num */) {
-  throw new Error('Not implemented');
+function getDigitalRoot(num) {
+  let str = num.toString();
+  let arr = str.split('');
+  let sum = 10;
+  arr = arr.map(Number);
+  sum = arr.reduce((a, b) => a + b);
+  while (sum > 10) {
+    str = sum.toString();
+    arr = str.split('');
+    arr = arr.map(Number);
+    sum = arr.reduce((a, b) => a + b);
+  }
+  return sum;
 }
 
 /**
@@ -314,8 +371,38 @@ function getDigitalRoot(/* num */) {
  *   '{)' = false
  *   '{[(<{[]}>)]}' = true
  */
-function isBracketsBalanced(/* str */) {
-  throw new Error('Not implemented');
+function isBracketsBalanced(str) {
+  const stos = [];
+  const napis = str.split('');
+  const slowniko = '[({<';
+  const slownikz = '])}>';
+  if (str.length === 0) {
+    return true;
+  }
+  if (str.length % 2 === 1) {
+    return false;
+  }
+  let tempz = 'aa';
+  let tempo = 'bb';
+  napis.forEach((i) => {
+    if (slownikz.indexOf(i) !== -1) {
+      if (i === tempz) {
+        stos.pop();
+        tempo = stos[stos.length - 1];
+        tempz = slownikz.charAt(slowniko.indexOf(tempo));
+      } else {
+        return false;
+      }
+    }
+    if (slowniko.indexOf(i) !== -1) {
+      stos.push(i);
+      tempo = stos[stos.length - 1];
+      tempz = slownikz.charAt(slowniko.indexOf(tempo));
+    }
+    return null;
+  });
+  if (stos.length === 0) return true;
+  return false;
 }
 
 /**
@@ -338,8 +425,8 @@ function isBracketsBalanced(/* str */) {
  *    365, 4  => '11231'
  *    365, 10 => '365'
  */
-function toNaryString(/* num, n */) {
-  throw new Error('Not implemented');
+function toNaryString(num, n) {
+  return num.toString(n);
 }
 
 /**
