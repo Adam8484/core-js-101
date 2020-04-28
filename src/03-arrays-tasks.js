@@ -450,8 +450,11 @@ function getIdentityMatrix(/* n */) {
  *     0, 100 => [ 0, 1, 2, ..., 100 ]
  *     3, 3   => [ 3 ]
  */
-function getIntervalArray(/* start, end */) {
-  throw new Error('Not implemented');
+function getIntervalArray(start, end) {
+  const len = end - start + 1;
+  let tempArr = Array.from({ length: len });
+  tempArr = tempArr.map((x, i) => start + i);
+  return tempArr;
 }
 
 /**
@@ -465,8 +468,9 @@ function getIntervalArray(/* start, end */) {
  *   [ 'a', 'a', 'a', 'a' ]  => [ 'a' ]
  *   [ 1, 1, 2, 2, 3, 3, 4, 4] => [ 1, 2, 3, 4]
  */
-function distinct(/* arr */) {
-  throw new Error('Not implemented');
+function distinct(arr) {
+  const uniqueA = [...new Set(arr)];
+  return uniqueA;
 }
 
 /**
@@ -555,16 +559,21 @@ function getElementByIndexes(/* arr, indexes */) {
  *
  */
 function swapHeadAndTail(arr) {
-  if (arr.lenght < 2) return arr;
-  let len = arr.lenght;
-  if (len % 2 === 0) len /= 2;
-  else len = Math.round(len / 2) - 1;
-  const head = arr.slice(0, len);
-  const tail = arr.slice(-len);
-  let retArr = arr;
-  retArr = retArr.splice(0, len, head);
-  retArr = retArr.splice(retArr.lenght - len, len, tail);
-  return retArr;
+  const len = arr.length;
+  let middle = [];
+  let lenPart = len / 2;
+  if (len < 2) return arr;
+  if (len % 2 === 1) {
+    lenPart = Math.round(len / 2) - 1;
+    middle = arr[Math.round(len / 2) - 1];
+  }
+  const head = arr.slice(0, lenPart);
+  const tail = arr.reverse().slice(0, lenPart).reverse();
+  arr.reverse();
+  let newArr = [];
+  if (len % 2 === 1) newArr = tail.concat(middle, head);
+  else newArr = tail.concat(head);
+  return newArr;
 }
 
 module.exports = {
